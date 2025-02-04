@@ -33,8 +33,9 @@ export class RolesController {
     @ApiResponse({ status: 500, description: 'Fallo inesperado en la base de datos', type: ResponseApi })
     async createRole(@Body() createRoleDto: CreateRoleDto): Promise<ResponseApi<Role>> {
         const newRole = await this.rolesService.createRole(createRoleDto);
-        if (!newRole) return new ResponseApi<Role>(409, 'Rol ya existe', null);
-        
+
+        if (!newRole) throw new HttpException('Rol ya existe', HttpStatus.CONFLICT);
+
         return new ResponseApi<Role>(201, 'Rol creado exitosamente', newRole);
     }
 
