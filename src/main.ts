@@ -9,7 +9,7 @@ import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Habilitar la validación global para DTOs
+  // Habilitar la valid ación global para DTOs
   app.useGlobalPipes(new ValidationPipe());
 
   // Configuración de Swagger
@@ -21,13 +21,16 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  app.useGlobalInterceptors(new GlobalErrorInterceptor());
 
+  // Aún no se sabe si por buenas practicas se hace acá o en lib/
   // admin.initializeApp({
   //   credential: admin.credential.cert(process.env.FIREBASE_SERVICE_ACCOUNT_KEY!),
   // });
 
+  // Aplicar el filtro global de excepciones (para estructurar errores HTTP)
   app.useGlobalFilters(new HttpExceptionFilter());
+  // Aplicar el interceptor global (para manejar errores inesperados)
+  app.useGlobalInterceptors(new GlobalErrorInterceptor());
 
   await app.listen(process.env.PORT ?? 3000);
 }
