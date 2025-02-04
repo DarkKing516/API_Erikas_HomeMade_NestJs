@@ -21,9 +21,11 @@ export class RolesService {
         return { id: roleSnapshot.id, ...roleSnapshot.data() } as Role;
     }
 
-    async createRole(createRoleDto: CreateRoleDto): Promise<Role> {
-        const newRoleRef = this.collection.doc(createRoleDto.name.toLowerCase());
+    async createRole(createRoleDto: CreateRoleDto): Promise<Role | null> {
+        const existingRole = await this.getRoleByName(createRoleDto.name.toLowerCase());
+        if (existingRole) return null;
 
+        const newRoleRef = this.collection.doc(createRoleDto.name.toLowerCase());
         const newRole: Role = {
             ...createRoleDto,
             id: newRoleRef.id,
