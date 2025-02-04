@@ -8,11 +8,17 @@ import { firestore } from 'src/lib/firebase-config';
 export class RolesService {
     private collection = firestore.collection('roles');
 
-    private roles: Role[] = []; // Usamos la interfaz Role para definir el tipo del array
-
     async getAllRoles(): Promise<Role[]> {
         const snapshot = await this.collection.get();
         return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Role));
+    }
+
+    async getRoleByName(name: string): Promise<Role | null> {
+        const roleSnapshot = await this.collection.doc(name.toLowerCase()).get();
+        if (!roleSnapshot.exists) {
+            return null;
+        }
+        return { id: roleSnapshot.id, ...roleSnapshot.data() } as Role;
     }
 
     async createRole(createRoleDto: CreateRoleDto): Promise<Role> {

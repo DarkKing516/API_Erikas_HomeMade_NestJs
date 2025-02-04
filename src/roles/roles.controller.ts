@@ -45,13 +45,17 @@ export class RolesController {
         description: 'Filtra los roles por nombre',
         example: 'Admin',
     })
-    @ApiResponse({ status: 200, description: 'Lista de roles filtrados', type: ResponseApi<Role[]> })
-    getRolesByName(@Query('name') name: string): ResponseApi<Role[]> {
-
-        return {
-            statusCode: 200,
-            message: 'Roles filtrados correctamente',
-            data: null,
-        };
+    @ApiResponse({ status: 200, description: 'Rol encontrado', type: ResponseApi<Role> })
+    @ApiResponse({ status: 404, description: 'Rol no encontrado', type: ResponseApi })
+    @ApiResponse({ status: 500, description: 'Fallo inesperado en la base de datos', type: ResponseApi })
+    async getRolesByName(@Query('name') name: string): Promise<ResponseApi<Role>> {
+        try {
+            const role = await this.rolesService.getRoleByName(name);
+            return role ? new ResponseApi<Role>(200, 'Rol encontrado', role)
+                : new ResponseApi<Role>(404, 'Rol no encontrado', null);
+        } catch (exp) {
+            throw new HttpException(new ResponseApi(500, 'Error interno del servidor'), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
 }
