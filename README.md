@@ -8,6 +8,8 @@ La API utiliza **Swagger** para la documentación interactiva y **Firebase** com
 
 [Visita la API aquí](https://erikas-homemade-api.com/).
 
+[API LOCAL](http://localhost:3001/api)
+
 ## Configuración del Proyecto
 
 ### Requisitos
