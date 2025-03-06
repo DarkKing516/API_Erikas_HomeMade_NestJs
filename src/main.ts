@@ -2,14 +2,12 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
-import { GlobalErrorInterceptor } from './common/interceptors/global-error.interceptor';
-import * as admin from 'firebase-admin';
-import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
 
-  // Habilitar la valid ación global para DTOs
+  // Habilitar la valid ación global para DTO
   app.useGlobalPipes(new ValidationPipe());
 
   // Configuración de Swagger
@@ -28,9 +26,9 @@ async function bootstrap() {
   // });
 
   // Aplicar el filtro global de excepciones (para estructurar errores HTTP)
-  app.useGlobalFilters(new HttpExceptionFilter());
+  // app.useGlobalFilters(new HttpExceptionFilter());
   // Aplicar el interceptor global (para manejar errores inesperados)
-  app.useGlobalInterceptors(new GlobalErrorInterceptor());
+  // app.useGlobalInterceptors(new GlobalErrorInterceptor());
 
   await app.listen(process.env.PORT ?? 3000);
 }

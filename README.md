@@ -1,6 +1,6 @@
 # Erika's Homemade API
 
-Este proyecto es la API backend para **Erika's Homemade**, una aplicación que gestiona los roles, usuarios, productos, reservas y otros servicios para un negocio de alimentos caseros. Originalmente un monolito, este proyecto se migró a una arquitectura de API usando **NestJS** y se conecta con **Firebase** para gestionar datos.
+Este proyecto es la API backend para **Erika's Homemade**, una aplicación que gestiona los roles, usuarios, productos, reservas y otros servicios para un negocio de modistería. Originalmente, un monolito, este proyecto se migró a una arquitectura de API usando **NestJS** y se conecta con **Firebase** para gestionar datos.
 
 La API utiliza **Swagger** para la documentación interactiva y **Firebase** como base de datos. Esta API también soporta operaciones CRUD sobre los roles y servicios del sistema.
 
@@ -8,13 +8,14 @@ La API utiliza **Swagger** para la documentación interactiva y **Firebase** com
 
 [Visita la API aquí](https://erikas-homemade-api.com/).
 
-[API LOCAL](http://localhost:3001/api)
+[localhost:3001/api](http://localhost:3000/api)
 
 ## Configuración del Proyecto
 
 ### Requisitos
 
-Asegúrate de tener **Node.js** y **npm** instalados. Si no los tienes, puedes descargarlos desde [Node.js](https://nodejs.org/).
+Asegúrate de tener **Node.js** y **npm** instalados. Si no los tienes, puedes descargarlos desde [Node.js](https://nodejs.org/) 
+NOTA: se recomienda el uso de [NVM](https://github.com/coreybutler/nvm-windows.git) en lugar de instalar Node.js convencional.
 
 ### Instalación de Dependencias
 
@@ -42,7 +43,7 @@ $ nest generate service nombre_del_servicio
    Ejecuta el proyecto en modo desarrollo:
 
    ```bash
-   $ npm run start
+   $ npm run start:dev
    ```
 
 2. **Modo Desarrollo con Nodemon:**
