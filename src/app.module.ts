@@ -8,6 +8,7 @@ import { Logs } from './data/entities/Logs';
 import { GlobalErrorInterceptor } from './common/interceptors/global-error.interceptor';
 import {ConfigModule as Config} from './modules/config/config.module';
 import { LogService } from './lib/services/log.service';
+import { ProductsModule } from './modules/product/products.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { LogService } from './lib/services/log.service';
     }),
     TypeOrmModule.forFeature([Logs], 'sqliteConnection'),
     Config,
+    ProductsModule,
   ],
   controllers : [AppController],
   providers   : [
