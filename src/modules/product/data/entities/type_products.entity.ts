@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { BaseEntity } from 'src/data/entities/base';
+import { BaseEntity } from 'src/data/entities/baseEntity.entity';
 
 export class TypeProductsEntity extends BaseEntity {
 

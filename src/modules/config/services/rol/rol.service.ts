@@ -1,7 +1,7 @@
 // src/roles/roles.service.ts
 import { Injectable } from '@nestjs/common';
 import { firestore } from 'src/lib/firebase/firebase-config';
-import { RolesEntity } from '../../data/entities/roles';
+import { RolesEntity } from '../../data/entities/roles.entity';
 import { RoleCreateDto } from '../../data/dto/role-create.dto';
 import { RoleUpdateDto } from '../../data/dto/role-update.dto';
 import { RoleDeleteDto } from '../../data/dto/role-delete.dto';
