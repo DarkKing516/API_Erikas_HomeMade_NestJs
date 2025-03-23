@@ -1,14 +1,14 @@
 import {Injectable} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Repository} from 'typeorm';
-import { Logs } from '../../data/entities/Logs';
+import { LogsEntity } from '../../data/entities/Logs.entity';
 
 @Injectable()
 export class LogService {
-    constructor(@InjectRepository(Logs, 'sqliteConnection') private logRepository: Repository<Logs>,) {}
+    constructor(@InjectRepository(LogsEntity, 'sqliteConnection') private logRepository: Repository<LogsEntity>,) {}
 
-    async createLog(type: 'DB' | 'HTTP' | 'ERR', message: string, input: string, output: string, url: string, method: string): Promise<Logs> {
-        const log    = new Logs();
+    async createLog(type: 'DB' | 'HTTP' | 'ERR', message: string, input: string, output: string, url: string, method: string): Promise<LogsEntity> {
+        const log    = new LogsEntity();
         log.type     = type;
         log.message  = message;
         log.input    = input;

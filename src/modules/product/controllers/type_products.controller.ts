@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Query, HttpException, HttpStatus, Put, Delete, Header, Param } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, HttpException, HttpStatus, Put, Delete, Param } from '@nestjs/common';
+import { ApiTags, ApiResponse,} from '@nestjs/swagger';
 import { ResponseApi } from 'src/common/dto/response-api.dto';
 import { TypeProductsService } from '../services/type_products/type_products.service';
-import { TypeProductsEntity } from '../data/entities/type_products';
+import { TypeProductsEntity } from '../data/entities/type_products.entity';
 import { TypeProductsCreateDto } from '../data/dto/type_products_create.dto';
 import { TypeProductsUpdateDto } from '../data/dto/type_products_update.dto';
 

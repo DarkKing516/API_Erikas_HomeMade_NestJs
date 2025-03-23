@@ -4,11 +4,12 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { Logs } from './data/entities/Logs';
+import { LogsEntity } from './data/entities/Logs.entity';
 import { GlobalErrorInterceptor } from './common/interceptors/global-error.interceptor';
 import {ConfigModule as Config} from './modules/config/config.module';
 import { LogService } from './lib/services/log.service';
 import { ProductsModule } from './modules/product/products.module';
+import { DatesModule } from './modules/dates/dates.module';
 
 @Module({
   imports: [
@@ -19,12 +20,13 @@ import { ProductsModule } from './modules/product/products.module';
       name        : 'sqliteConnection',
       type        : 'sqlite',
       database    : 'logs.sqlite',
-      entities    : [Logs],
+      entities    : [LogsEntity],
       synchronize : true,
     }),
-    TypeOrmModule.forFeature([Logs], 'sqliteConnection'),
+    TypeOrmModule.forFeature([LogsEntity], 'sqliteConnection'),
     Config,
     ProductsModule,
+    DatesModule,
   ],
   controllers : [AppController],
   providers   : [
