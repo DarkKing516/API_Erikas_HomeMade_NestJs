@@ -1,17 +1,17 @@
 import { Controller, Get, Post, Body, HttpException, HttpStatus, Put, Delete, Param } from '@nestjs/common';
 import { ApiTags, ApiResponse,} from '@nestjs/swagger';
 import { ResponseApi } from 'src/common/dto/response-api.dto';
-import { TypeProductsService } from '../services/type_products/type_products.service';
-import { TypeProductsEntity } from '../data/entities/type_products.entity';
-import { TypeProductsCreateDto } from '../data/dto/type_products_create.dto';
-import { TypeProductsUpdateDto } from '../data/dto/type_products_update.dto';
+import { TypeProductsService } from '../services/product-type.service';
+import { TypeProductsEntity } from '../data/entities/product-types.entity';
+import { TypeProductsCreateDto } from '../data/dto/create-product-type.dto';
+import { TypeProductsUpdateDto } from '../data/dto/update-product-type.dto';
 
-@ApiTags('Type_products')
-@Controller('type_products')
+@ApiTags('Product type')
+@Controller('product-types')
 export class TypeProductsController {
     constructor(private readonly typeProductsService: TypeProductsService) { }
 
-    @Get('GetTypeProducts')
+    @Get('get-all')
     @ApiResponse({ status: 200, description: 'Lista de tipo de productos', type: ResponseApi<TypeProductsEntity[]> })
     @ApiResponse({ status: 204, description: 'No hay tipos de productos disponibles', type: ResponseApi })
     async getAllTypeProducts(): Promise<ResponseApi<TypeProductsEntity[]>> {
@@ -21,7 +21,7 @@ export class TypeProductsController {
         return new ResponseApi<TypeProductsEntity[]>(statusCode, message, type_products);
     }
 
-    @Post('CreateTypeProduct')
+    @Post('create')
     @ApiResponse({ status: 201, description: 'Tipo de producto creado', type: ResponseApi<TypeProductsEntity[]> })
     @ApiResponse({ status: 409, description: 'El tipo de producto ya existe', type: ResponseApi })
     async createTypeProduct(@Body() TypeProductsCreateDto: TypeProductsCreateDto): Promise<ResponseApi<TypeProductsEntity>> {

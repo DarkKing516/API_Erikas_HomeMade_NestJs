@@ -1,18 +1,18 @@
 import { Controller, Get, Post, Body, Query, HttpException, HttpStatus, Put, Delete } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { ResponseApi } from 'src/common/dto/response-api.dto';
-import { RolService } from '../../services/rol/rol.service';
-import { RolesEntity } from '../../data/entities/roles.entity';
-import { RoleCreateDto } from '../../data/dto/role-create.dto';
-import { RoleUpdateDto } from '../../data/dto/role-update.dto';
-import { RoleDeleteDto } from '../../data/dto/role-delete.dto';
+import { RolService } from '../services/rol.service';
+import { RolesEntity } from '../data/entities/roles.entity';
+import { CreateRoleDto } from '../data/dto/create-role.dto';
+import { UpdateRoleDto } from '../data/dto/update-role.dto';
+import { DeleteRoleDto } from '../data/dto/delete-role.dto';
 
 @ApiTags('Roles')
 @Controller('roles')
-export class RolController {
+export class RolesController {
     constructor(private readonly rolesService: RolService) { }
 
-    @Get('GetRoles')
+    @Get('get-all')
     @ApiOperation({ summary: 'Obtener todos los roles' })
     @ApiResponse({ status: 200, description: 'Lista de roles', type: ResponseApi<RolesEntity[]> })
     @ApiResponse({ status: 204, description: 'No hay roles disponibles', type: ResponseApi })
@@ -23,15 +23,15 @@ export class RolController {
         return new ResponseApi<RolesEntity[]>(statusCode, message, roles);
     }
 
-    @Post('CreateRol')
-    @ApiOperation({ summary: 'Crear un nuevo rol' })
+    @Post('create')
+    @ApiOperation({ summary: 'Crear un nuevo roles' })
     @ApiResponse({ status: 201, description: 'Rol creado', type: ResponseApi<RolesEntity[]> })
-    @ApiResponse({ status: 409, description: 'El rol ya existe', type: ResponseApi })
-    async createRole(@Body() createRoleDto: RoleCreateDto): Promise<ResponseApi<RolesEntity>> {
+    @ApiResponse({ status: 409, description: 'El roles ya existe', type: ResponseApi })
+    async createRole(@Body() createRoleDto: CreateRoleDto): Promise<ResponseApi<RolesEntity>> {
         const newRole = await this.rolesService.createRole(createRoleDto);
         if (!newRole) {
             throw new HttpException(
-              new ResponseApi(409, 'El rol ya existe'),
+              new ResponseApi(409, 'El roles ya existe'),
               HttpStatus.CONFLICT
             );
         }
@@ -58,10 +58,10 @@ export class RolController {
     }
 
     @Put('update')
-    @ApiOperation({ summary: 'Actualizar un rol' })
+    @ApiOperation({ summary: 'Actualizar un roles' })
     @ApiResponse({ status: 200, description: 'Rol actualizado correctamente', type: ResponseApi<RolesEntity> })
     @ApiResponse({ status: 404, description: 'Rol no encontrado', type: ResponseApi })
-    async updateRole(@Body() updateData: RoleUpdateDto): Promise<ResponseApi<RolesEntity>> {
+    async updateRole(@Body() updateData: UpdateRoleDto): Promise<ResponseApi<RolesEntity>> {
         const updatedRole = await this.rolesService.updateRole(updateData);
         if (!updatedRole) {
             throw new HttpException(new ResponseApi(404, 'Rol no encontrado'), HttpStatus.NOT_FOUND);
@@ -70,10 +70,10 @@ export class RolController {
     }
 
     @Delete('delete')
-    @ApiOperation({ summary: 'Eliminar un rol' })
+    @ApiOperation({ summary: 'Eliminar un roles' })
     @ApiResponse({ status: 200, description: 'Rol eliminado correctamente', type: ResponseApi })
     @ApiResponse({ status: 404, description: 'Rol no encontrado', type: ResponseApi })
-    async deleteRole(@Body() id: RoleDeleteDto): Promise<ResponseApi<null>> {
+    async deleteRole(@Body() id: DeleteRoleDto): Promise<ResponseApi<null>> {
         const deleted = await this.rolesService.deleteRole(id);
         if (!deleted) {
             throw new HttpException(new ResponseApi(404, 'Rol no encontrado'), HttpStatus.NOT_FOUND);

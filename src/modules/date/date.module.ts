@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { AppointmentsController } from './controllers/appointments.controller';
-import { AppointmentsService } from './services/appointments.service';
+import { AppointmentService } from './services/appointment.service';
 
 @Module({
   controllers : [AppointmentsController],
-  providers : [AppointmentsService],
+  providers : [AppointmentService],
 })
-export class DatesModule {}
+export class DateModule {}

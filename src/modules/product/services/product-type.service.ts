@@ -1,9 +1,9 @@
 // src/roles/roles.service.ts
 import { Injectable } from '@nestjs/common';
 import { firestore } from 'src/lib/firebase/firebase-config';
-import { TypeProductsEntity } from '../../data/entities/type_products.entity';
-import { TypeProductsCreateDto } from '../../data/dto/type_products_create.dto';
-import { TypeProductsUpdateDto } from '../../data/dto/type_products_update.dto';
+import { TypeProductsEntity } from '../data/entities/product-types.entity';
+import { TypeProductsCreateDto } from '../data/dto/create-product-type.dto';
+import { TypeProductsUpdateDto } from '../data/dto/update-product-type.dto';
 
 @Injectable()
 export class TypeProductsService {

@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { RoleCreateDto } from './role-create.dto';
+import { CreateRoleDto } from './create-role.dto';
 
-export class RoleUpdateDto extends RoleCreateDto{
+export class UpdateRoleDto extends CreateRoleDto{
     @ApiProperty({ name: 'id', example: "Admin" })
     id: string;
 }

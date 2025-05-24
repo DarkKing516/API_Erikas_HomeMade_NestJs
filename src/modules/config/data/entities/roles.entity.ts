@@ -1,12 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class RolesEntity {
-  @ApiProperty({ name: 'id', example: 1 })
+  @ApiProperty({ example: 1 })
   id     : string;
 
-  @ApiProperty({ name: 'role', example: 'Admin' })
+  @ApiProperty({ example: 'Admin' })
   role   : string;
 
-  @ApiProperty({ name: 'status', example: true })
+  @ApiProperty({ example: true })
   status : boolean;
 }

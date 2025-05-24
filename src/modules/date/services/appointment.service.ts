@@ -3,11 +3,11 @@ import { Injectable } from '@nestjs/common';
 import { firestore } from 'src/lib/firebase/firebase-config';
 import { Timestamp } from 'firebase-admin/firestore';
 import { AppointmentsEntity } from '../data/entities/appointments.entity';
-import { CreateAppointmentDto } from '../data/dto/create_appoiment.dto';
+import { CreateAppointmentDto } from '../data/dto/create-appoiment.dto';
 import { UpdateAppointmentDto } from '../data/dto/update-appoiment.dto';
 
 @Injectable()
-export class AppointmentsService {
+export class AppointmentService {
   private collection = firestore.collection('appointments');
 
   async getAll(): Promise<AppointmentsEntity[]> {
