@@ -9,7 +9,7 @@ import { GlobalErrorInterceptor } from './common/interceptors/global-error.inter
 import {ConfigModule as Config} from './modules/config/config.module';
 import { LogService } from './lib/services/log.service';
 import { ProductsModule } from './modules/product/products.module';
-import { DatesModule } from './modules/dates/dates.module';
+import { DatesModule } from './modules/date/dates.module';
 
 @Module({
   imports: [
