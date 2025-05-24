@@ -110,6 +110,30 @@ http://localhost:3000/api
 
 ---
 
-## Soporte y Contribuciones
+## 📊 Soporte y Contribuciones al Proyecto
 
 Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos. Si deseas contribuir al proyecto, por favor haz un **fork** y abre un **pull request** con las modificaciones.
+
+![GitHub Contributors](https://img.shields.io/github/contributors/DarkKing516/API_Erikas_HomeMade_NestJs?style=for-the-badge)
+![GitHub Last Commit](https://img.shields.io/github/last-commit/DarkKing516/API_Erikas_HomeMade_NestJs?style=for-the-badge)
+![GitHub Commits](https://img.shields.io/github/commit-activity/y/DarkKing516/API_Erikas_HomeMade_NestJs?style=for-the-badge)
+![GitHub PRs](https://img.shields.io/github/issues-pr/DarkKing516/API_Erikas_HomeMade_NestJs?style=for-the-badge)
+![GitHub PRs Merged](https://img.shields.io/github/issues-pr-closed/DarkKing516/API_Erikas_HomeMade_NestJs?style=for-the-badge)
+
+## 🚀 Tecnologías y Lenguajes
+
+Este proyecto ha sido desarrollado con **NestJS**, un framework progresivo para Node.js que utiliza TypeScript y sigue principios de arquitectura modular.
+
+![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+
+![GitHub Languages](https://img.shields.io/github/languages/top/DarkKing516/API_Erikas_HomeMade_NestJs?style=for-the-badge)
+![GitHub Languages Count](https://img.shields.io/github/languages/count/DarkKing516/API_Erikas_HomeMade_NestJs?style=for-the-badge)
+![GitHub Repo Size](https://img.shields.io/github/repo-size/DarkKing516/API_Erikas_HomeMade_NestJs?style=for-the-badge)
+
+
+## 👥 Colaboradores
+- [![DarkKing516](https://github.com/DarkKing516.png?size=50)](https://github.com/DarkKing516)
+- [![Dan2572](https://github.com/Dan2572.png?size=50)](https://github.com/Dan2572)
+- [![Ikaedso](https://github.com/Ikaedso.png?size=50)](https://github.com/Ikaedso)
