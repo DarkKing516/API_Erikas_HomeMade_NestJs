@@ -1,10 +1,9 @@
-// src/roles/roles.service.ts
 import { Injectable } from '@nestjs/common';
 import { firestore } from 'src/lib/firebase/firebase-config';
-import { RolesEntity } from '../../data/entities/roles.entity';
-import { RoleCreateDto } from '../../data/dto/role-create.dto';
-import { RoleUpdateDto } from '../../data/dto/role-update.dto';
-import { RoleDeleteDto } from '../../data/dto/role-delete.dto';
+import { RolesEntity } from '../data/entities/roles.entity';
+import { CreateRoleDto } from '../data/dto/create-role.dto';
+import { UpdateRoleDto } from '../data/dto/update-role.dto';
+import { DeleteRoleDto } from '../data/dto/delete-role.dto';
 
 @Injectable()
 export class RolService {
@@ -27,7 +26,7 @@ export class RolService {
     return { id: roleSnapshot.id, ...roleSnapshot.data() } as RolesEntity;
   }
 
-  async createRole(createRoleDto: RoleCreateDto): Promise<RolesEntity | null> {
+  async createRole(createRoleDto: CreateRoleDto): Promise<RolesEntity | null> {
     const existingRole = await this.getRoleByName(
       createRoleDto.role.toLowerCase(),
     );
@@ -45,7 +44,7 @@ export class RolService {
     return newRole;
   }
 
-  async updateRole(updateData: Partial<RoleUpdateDto>): Promise<RolesEntity | null> {
+  async updateRole(updateData: Partial<UpdateRoleDto>): Promise<RolesEntity | null> {
     const roleRef = this.collection.doc((updateData.id ?? "").toLowerCase());
     const roleSnapshot = await roleRef.get();
 
@@ -55,7 +54,7 @@ export class RolService {
     return { id: roleRef.id, ...updateData } as RolesEntity;
   }
 
-  async deleteRole(deleteRole: RoleDeleteDto): Promise<boolean> {
+  async deleteRole(deleteRole: DeleteRoleDto): Promise<boolean> {
     const roleRef = this.collection.doc(deleteRole.id);
     const roleSnapshot = await roleRef.get();
 

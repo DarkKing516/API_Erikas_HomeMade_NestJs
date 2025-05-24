@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CreateAppointmentDto } from './create_appoiment.dto';
+import { CreateAppointmentDto } from './create-appoiment.dto';
 
 export class UpdateAppointmentDto extends CreateAppointmentDto {
   @ApiProperty({ name: 'id', example: '1' })

@@ -1,17 +1,17 @@
 import { Controller, Get, Post, Body, HttpException, HttpStatus, Put, Delete, Param } from '@nestjs/common';
 import { ApiTags, ApiResponse} from '@nestjs/swagger';
 import { ResponseApi } from 'src/common/dto/response-api.dto';
-import { AppointmentsService } from '../services/appointments.service';
+import { AppointmentService } from '../services/appointment.service';
 import { AppointmentsEntity } from '../data/entities/appointments.entity';
-import { CreateAppointmentDto } from '../data/dto/create_appoiment.dto';
+import { CreateAppointmentDto } from '../data/dto/create-appoiment.dto';
 import { UpdateAppointmentDto } from '../data/dto/update-appoiment.dto';
 
 @ApiTags('Appointments')
 @Controller('appointments')
 export class AppointmentsController {
-  constructor(private readonly appointmentsService: AppointmentsService) { }
+  constructor(private readonly appointmentsService: AppointmentService) { }
 
-  @Get('getAppointments')
+  @Get('get-all')
   @ApiResponse({ status: 200, description: 'Lista de citas.', type: ResponseApi<AppointmentsEntity[]> })
   @ApiResponse({ status: 204, description: 'No hay citas disponibles.', type: ResponseApi })
   async getAllAppointments(): Promise<ResponseApi<AppointmentsEntity[]>> {
@@ -21,7 +21,7 @@ export class AppointmentsController {
     return new ResponseApi<AppointmentsEntity[]>(statusCode, message, appointments);
   }
 
-  @Post('CreateAppointment')
+  @Post('create')
   @ApiResponse({ status: 201, description: 'Tipo de producto creado', type: ResponseApi<AppointmentsEntity[]> })
   @ApiResponse({ status: 409, description: 'El tipo de producto ya existe', type: ResponseApi })
   async createAppointment(@Body() createData: CreateAppointmentDto): Promise<ResponseApi<AppointmentsEntity>> {

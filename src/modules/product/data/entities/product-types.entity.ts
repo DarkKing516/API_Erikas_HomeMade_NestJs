@@ -3,6 +3,6 @@ import { BaseEntity } from 'src/data/entities/baseEntity.entity';
 
 export class TypeProductsEntity extends BaseEntity {
 
-  @ApiProperty({ name: 'name', example: 'Manualidades' })
+  @ApiProperty({ example: 'Manualidades' })
   name   : string;
 }
