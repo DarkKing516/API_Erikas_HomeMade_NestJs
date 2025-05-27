@@ -5,6 +5,7 @@ import { Timestamp } from 'firebase-admin/firestore';
 import { AppointmentsEntity } from '../data/entities/appointments.entity';
 import { CreateAppointmentDto } from '../data/dto/create-appoiment.dto';
 import { UpdateAppointmentDto } from '../data/dto/update-appoiment.dto';
+import { AppointmentsEnum } from '../../../common/enum/appointmentsEnum';
 
 @Injectable()
 export class AppointmentService {
@@ -42,9 +43,10 @@ export class AppointmentService {
     const newAppointment: AppointmentsEntity = {
       ...dataCreate,
       id: newAppointmentRef.id,
-      dateCreate : Timestamp.fromDate(new Date()), // Guarda como Timestamp
-      appointmentDate : Timestamp.fromDate(new Date(dataCreate.appointmentDate)),
-      status: 'Por aceptar',
+      dateCreate: Timestamp.fromDate(new Date()), // Guarda como Timestamp
+      appointmentDate: Timestamp.fromDate(new Date(dataCreate.appointmentDate)),
+      status: AppointmentsEnum.POR_ACEPTAR,
+      created: new Date(),
     };
 
     await newAppointmentRef.set(newAppointment);

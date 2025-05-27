@@ -1,0 +1,6 @@
+export enum AppointmentsEnum {
+  POR_ACEPTAR = "POR_ACEPTAR",
+  ACEPTADO = "ACEPTADO",
+  CANCELADO = "CANCELADO",
+  TERMINADO = "TERMINADO"
+}

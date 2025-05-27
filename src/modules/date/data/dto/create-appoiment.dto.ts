@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateAppointmentDto{
   @ApiProperty({ name: 'userId', example: 1 })
-  userId: number;
+  userId: string;
 
   @ApiProperty({ name: 'appointmentDate', example: new Date() })
   appointmentDate: Date;
