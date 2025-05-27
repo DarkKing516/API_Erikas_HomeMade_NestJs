@@ -1,38 +1,37 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { firestore } from 'src/lib/firebase/firebase-config';
 import { RolesEntity } from '../data/entities/roles.entity';
 import { CreateRoleDto } from '../data/dto/create-role.dto';
 import { UpdateRoleDto } from '../data/dto/update-role.dto';
 import { DeleteRoleDto } from '../data/dto/delete-role.dto';
+import { fromSnapshot } from '../../../common/utils/functions';
+import { roleConverter } from '../../../lib/firebase/converters/config/role-converter';
 
 @Injectable()
 export class RolService {
   private collection = firestore.collection('roles');
+  private collectionWithConverter = firestore.collection('roles').withConverter(roleConverter);
 
   async getAllRoles(): Promise<RolesEntity[]> {
-    const snapshot = await this.collection.get();
-    return snapshot.docs.map(
-      (doc) => ({ id: doc.id, ...doc.data() }) as RolesEntity,
-    );
+    return await this.mapCollection<RolesEntity>(this.collection);
   }
 
   async getRoleByName(roleName: string): Promise<RolesEntity | null> {
-    const roleSnapshot = await this.collection
-      .doc(roleName.toLowerCase())
-      .get();
-    if (!roleSnapshot.exists) {
-      return null;
-    }
-    return { id: roleSnapshot.id, ...roleSnapshot.data() } as RolesEntity;
+    const roleSnapshot = await this.collection.doc(roleName.toLowerCase()).get();
+    if (!roleSnapshot.exists) return null;
+    return fromSnapshot<RolesEntity>(roleSnapshot);
   }
 
-  async createRole(createRoleDto: CreateRoleDto): Promise<RolesEntity | null> {
-    const existingRole = await this.getRoleByName(
-      createRoleDto.role.toLowerCase(),
-    );
-    if (existingRole) return null;
+  async getRoleByNameWithConverter(roleName: string): Promise<RolesEntity> {
+    const doc = await this.collectionWithConverter.doc(roleName.toLowerCase()).get();
+    if (!doc.exists) throw new NotFoundException('Rol no encontrado');
+    return doc.data()!;
+  }
 
-    // const newRoleRef = this.collection.doc(createRoleDto.role.toLowerCase());
+  async createRole(createRoleDto: CreateRoleDto): Promise<RolesEntity> {
+    const existingRole = await this.getRoleByName(createRoleDto.role.toLowerCase());
+    if (existingRole) throw new ConflictException('El rol ya existe');
+
     const newRoleRef = this.collection.doc();
     const newRole: RolesEntity = {
       ...createRoleDto,
@@ -44,24 +43,39 @@ export class RolService {
     return newRole;
   }
 
-  async updateRole(updateData: Partial<UpdateRoleDto>): Promise<RolesEntity | null> {
-    const roleRef = this.collection.doc((updateData.id ?? "").toLowerCase());
+  async updateRole(updateData: UpdateRoleDto): Promise<RolesEntity> {
+    const roleRef = this.collectionWithConverter.doc(updateData.id.toLowerCase());
     const roleSnapshot = await roleRef.get();
 
-    if (!roleSnapshot.exists) return null;
+    if (!roleSnapshot.exists) throw new NotFoundException('Rol no encontrado');
 
-    await roleRef.update(updateData);
-    return { id: roleRef.id, ...updateData } as RolesEntity;
+    const { id, ...dataToUpdate } = updateData;
+    await roleRef.update(dataToUpdate);
+
+    const updatedSnapshot = await roleRef.get();
+    const updatedRole = updatedSnapshot.data();
+    if (!updatedRole) throw new NotFoundException('Error al recuperar el rol actualizado');
+
+    return updatedRole;
   }
+
 
   async deleteRole(deleteRole: DeleteRoleDto): Promise<boolean> {
     const roleRef = this.collection.doc(deleteRole.id);
     const roleSnapshot = await roleRef.get();
 
-    if (!roleSnapshot.exists) return false;
+    if (!roleSnapshot.exists) throw new NotFoundException('Rol no encontrado');
 
     await roleRef.delete();
     return true;
+  }
+
+  private async mapCollection<T>(ref: FirebaseFirestore.CollectionReference): Promise<T[]> {
+    const snapshot = await ref.get();
+    return snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    } as T));
   }
 }
 
