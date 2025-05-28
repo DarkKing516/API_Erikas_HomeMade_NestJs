@@ -1,12 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { exampleAppointment } from '../../../../common/utils/faker-examples';
 
 export class CreateAppointmentDto{
-  @ApiProperty({ name: 'userId', example: 1 })
+  @ApiProperty({ example: exampleAppointment.userId })
   userId          : string;
 
-  @ApiProperty({ name: 'appointmentDate', example: new Date() })
+  @ApiProperty({ example: exampleAppointment.appointmentDate })
   appointmentDate : Date;
 
-  @ApiProperty({ name: 'description', example: 'description example' })
+  @ApiProperty({ example: exampleAppointment.description })
   description     : string;
 }

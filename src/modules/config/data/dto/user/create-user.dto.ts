@@ -1,19 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { exampleUser } from '../../../../../common/utils/faker-examples';
 
 export class CreateUserDto {
-  @ApiProperty({ example: 'name' })
+  @ApiProperty({ example: exampleUser.name })
   name        : string;
 
-  @ApiProperty({ example: 'email' })
+  @ApiProperty({ example: exampleUser.email })
   email       : string;
 
-  @ApiProperty({ example: 'password' })
+  @ApiProperty({ example: exampleUser.password })
   password    : string;
 
-  @ApiProperty({ example: 'role' })
+  @ApiProperty({ example: exampleUser.id })
   roleId?     :string ;
 
-  @ApiProperty({ example: '1234' })
+  @ApiProperty({ example: exampleUser.phone })
   phone       : string;
 
 }

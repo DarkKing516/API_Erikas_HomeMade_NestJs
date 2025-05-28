@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { exampleRole } from '../../../../../common/utils/faker-examples';
 
 export class DeleteRoleDto {
-    @ApiProperty({ name: 'id', example: "1" })
+    @ApiProperty({ example: exampleRole.role })
     id: string;
 }
