@@ -4,6 +4,6 @@ import { AppointmentService } from './services/appointment.service';
 
 @Module({
   controllers : [AppointmentsController],
-  providers : [AppointmentService],
+  providers   : [AppointmentService],
 })
 export class DateModule {}

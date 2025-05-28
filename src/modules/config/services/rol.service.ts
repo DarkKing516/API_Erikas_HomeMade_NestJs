@@ -1,9 +1,9 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { firestore } from 'src/lib/firebase/firebase-config';
 import { RolesEntity } from '../data/entities/roles.entity';
-import { CreateRoleDto } from '../data/dto/create-role.dto';
-import { UpdateRoleDto } from '../data/dto/update-role.dto';
-import { DeleteRoleDto } from '../data/dto/delete-role.dto';
+import { CreateRoleDto } from '../data/dto/role/create-role.dto';
+import { UpdateRoleDto } from '../data/dto/role/update-role.dto';
+import { DeleteRoleDto } from '../data/dto/role/delete-role.dto';
 import { fromSnapshot } from '../../../common/utils/functions';
 import { roleConverter } from '../../../lib/firebase/converters/config/role-converter';
 
@@ -35,8 +35,9 @@ export class RolService {
     const newRoleRef = this.collection.doc();
     const newRole: RolesEntity = {
       ...createRoleDto,
-      id     : newRoleRef.id,
-      status : true,
+      id      : newRoleRef.id,
+      created : new Date(),
+      status  : true,
     };
 
     await newRoleRef.set(newRole);
@@ -50,7 +51,7 @@ export class RolService {
     if (!roleSnapshot.exists) throw new NotFoundException('Rol no encontrado');
 
     const { id, ...dataToUpdate } = updateData;
-    await roleRef.update(dataToUpdate);
+    await roleRef.update({ ...dataToUpdate, updated: new Date() });
 
     const updatedSnapshot = await roleRef.get();
     const updatedRole = updatedSnapshot.data();

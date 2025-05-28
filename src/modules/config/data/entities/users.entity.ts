@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { BaseEntity } from '../../../../data/entities/baseEntity.entity';
-import { RolesEntity } from '../../../config/data/entities/roles.entity';
+import { RolesEntity } from './roles.entity';
 
 export class UsersEntity extends BaseEntity {
   @ApiProperty({ example: 'name' })

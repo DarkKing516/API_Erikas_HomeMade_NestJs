@@ -22,16 +22,10 @@ export class AppointmentsController {
   }
 
   @Post('create')
-  @ApiResponse({ status: 201, description: 'Tipo de producto creado', type: ResponseApi<AppointmentsEntity[]> })
-  @ApiResponse({ status: 409, description: 'El tipo de producto ya existe', type: ResponseApi })
+  @ApiResponse({ status: 201, description: 'Cita creada correctamente', type: ResponseApi<AppointmentsEntity> })
+  @ApiResponse({ status: 409, description: 'No está disponible la fecha seleccionada', type: ResponseApi })
   async createAppointment(@Body() createData: CreateAppointmentDto): Promise<ResponseApi<AppointmentsEntity>> {
     const newData = await this.appointmentsService.createAppointment(createData);
-    if (!newData) {
-      throw new HttpException(
-        new ResponseApi(409, 'No está disponible la fecha que seleccionaste.'),
-        HttpStatus.CONFLICT
-      );
-    }
     return new ResponseApi<AppointmentsEntity>(201, 'La cita fue creada correctamente', newData);
   }
 
@@ -40,23 +34,17 @@ export class AppointmentsController {
   @ApiResponse({ status: 404, description: 'Cita no encontrada', type: ResponseApi })
   @ApiResponse({ status: 409, description: 'Ya hay una cita asignada a esta hora', type: ResponseApi })
   async update(@Body() updateData: UpdateAppointmentDto): Promise<ResponseApi<AppointmentsEntity>> {
-    const newData = await this.appointmentsService.updateAppointment(updateData);
-    if (newData == 1)
-      throw new HttpException(new ResponseApi(404, 'Cita no encontrada'), HttpStatus.NOT_FOUND);
-    if (newData == 2)
-      throw new HttpException(new ResponseApi(409, 'Ya hay una cita asignada a esta hora.'), HttpStatus.CONFLICT);
-    return new ResponseApi<AppointmentsEntity>(200, 'Cita actualizada con éxito', newData as AppointmentsEntity);
-
+    const updated = await this.appointmentsService.updateAppointment(updateData);
+    return new ResponseApi<AppointmentsEntity>(200, 'Cita actualizada con éxito', updated);
   }
 
   @Delete('delete/:id')
   @ApiResponse({ status: 200, description: 'Cita eliminada correctamente', type: ResponseApi })
   @ApiResponse({ status: 404, description: 'Cita no encontrada :p', type: ResponseApi })
-  async delete(@Param('id') id: string): Promise<ResponseApi<null>> {
+  async delete(@Param('id') id: string): Promise<ResponseApi<boolean>> {
     const deleted = await this.appointmentsService.deleteAppointment(id);
-    if (!deleted)
-      throw new HttpException(new ResponseApi(404, 'Cita no encontrada :p'), HttpStatus.NOT_FOUND);
-    return new ResponseApi<null>(200, 'Cita eliminada correctamente', null);
+    if (!deleted) throw new HttpException(new ResponseApi(404, 'Cita no encontrada :p'), HttpStatus.NOT_FOUND);
+    return new ResponseApi<boolean>(200, 'Cita eliminada correctamente', true);
   }
 
 }

@@ -3,9 +3,9 @@ import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { ResponseApi } from 'src/common/dto/response-api.dto';
 import { RolService } from '../services/rol.service';
 import { RolesEntity } from '../data/entities/roles.entity';
-import { CreateRoleDto } from '../data/dto/create-role.dto';
-import { UpdateRoleDto } from '../data/dto/update-role.dto';
-import { DeleteRoleDto } from '../data/dto/delete-role.dto';
+import { CreateRoleDto } from '../data/dto/role/create-role.dto';
+import { UpdateRoleDto } from '../data/dto/role/update-role.dto';
+import { DeleteRoleDto } from '../data/dto/role/delete-role.dto';
 
 @ApiTags('Roles')
 @Controller('roles')
