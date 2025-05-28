@@ -1,13 +1,11 @@
 import { faker } from '@faker-js/faker';
 import { AppointmentsEnum } from '../enum/appointmentsEnum';
-import { RolesEntity } from '../../modules/config/data/entities/roles.entity';
 
 export const exampleUser = {
   id       : faker.string.uuid(),
   name     : faker.person.fullName(),
   email    : faker.internet.email(),
   password : faker.internet.password({ length: 12 }),
-  role     : { RolesEntity },
   phone    : faker.phone.number(),
   status   : faker.datatype.boolean(),
 };
