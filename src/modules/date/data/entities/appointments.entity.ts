@@ -2,20 +2,21 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Timestamp } from 'firebase-admin/firestore';
 import { BaseEntity } from '../../../../data/entities/baseEntity.entity';
 import { AppointmentsEnum } from '../../../../common/enum/appointmentsEnum';
+import { exampleAppointment } from '../../../../common/utils/faker-examples';
 
 export class AppointmentsEntity extends BaseEntity {
-  @ApiProperty({ example: 1 })
+  @ApiProperty({ example: exampleAppointment.userId })
   userId            : string;
 
   @ApiProperty({ example: new Date().toISOString() })
   dateCreate        : Timestamp;
 
-  @ApiProperty({ example: new Date().toISOString() })
+  @ApiProperty({ example: exampleAppointment.appointmentDate })
   appointmentDate   : Timestamp; // También Timestamp para Firestore
 
-  @ApiProperty({ example: 'description example' })
+  @ApiProperty({ example: exampleAppointment.description })
   description       : string;
 
-  @ApiProperty({ example: AppointmentsEnum.POR_ACEPTAR, enum: AppointmentsEnum })
+  @ApiProperty({ example: exampleAppointment.status, enum: AppointmentsEnum })
   status            : AppointmentsEnum;
 }
