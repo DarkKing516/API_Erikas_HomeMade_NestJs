@@ -3,8 +3,8 @@ import { TypeProductsCreateDto } from './create-product-type.dto';
 
 export class TypeProductsUpdateDto extends TypeProductsCreateDto{
   @ApiProperty({ example: 1, description: 'id' })
-  id: string;
+  id     : string;
 
   @ApiProperty({ example: true, description: 'estado' })
-  status: boolean;
+  status : boolean;
 }

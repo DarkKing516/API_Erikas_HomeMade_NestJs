@@ -1,3 +1,4 @@
+// src/common/interceptors/global-error.interceptor.ts
 import {
   CallHandler,
   ExecutionContext,
