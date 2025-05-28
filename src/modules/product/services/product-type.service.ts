@@ -49,7 +49,7 @@ export class TypeProductsService {
     if (!typeProductSnapshot.exists) throw new NotFoundException('Tipo de producto no encontrado');
 
     const { id, ...dataToUpdate } = updateData;
-    await typeProductRef.update(dataToUpdate);
+    await typeProductRef.update({ ...dataToUpdate, updated: new Date() });
 
     const updatedSnapshot = await typeProductRef.get();
     const updatedData = updatedSnapshot.data();
