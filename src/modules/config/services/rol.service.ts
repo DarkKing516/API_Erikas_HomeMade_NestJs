@@ -6,15 +6,26 @@ import { UpdateRoleDto } from '../data/dto/role/update-role.dto';
 import { DeleteRoleDto } from '../data/dto/role/delete-role.dto';
 import { fromSnapshot } from '../../../common/utils/functions';
 import { roleConverter } from '../../../lib/firebase/converters/config/role-converter';
+import { RedisService } from '../../../lib/services/redis.service';
 
 @Injectable()
 export class RolService {
   private collection = firestore.collection('roles');
   private collectionWithConverter = firestore.collection('roles').withConverter(roleConverter);
+  constructor(private readonly redisService: RedisService) {}
 
   async getAllRoles(): Promise<RolesEntity[]> {
     return await this.mapCollection<RolesEntity>(this.collection);
   }
+
+/*  async getAllRoles(): Promise<RolesEntity[]> {
+    const cached = await this.redisService.get('roles:all');
+    if (cached) return JSON.parse(cached);
+
+    const roles = await this.mapCollection<RolesEntity>(this.collection);
+    await this.redisService.set('roles:all', JSON.stringify(roles));
+    return roles;
+  }*/
 
   async getRoleByName(roleName: string): Promise<RolesEntity | null> {
     const roleSnapshot = await this.collection.doc(roleName.toLowerCase()).get();

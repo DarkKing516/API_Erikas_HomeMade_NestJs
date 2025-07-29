@@ -30,6 +30,6 @@ async function bootstrap() {
   // Aplicar el interceptor global (para manejar errores inesperados)
   // app.useGlobalInterceptors(new GlobalErrorInterceptor());
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT || 3000);
 }
-bootstrap();
+(async () => await bootstrap())();
