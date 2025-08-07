@@ -30,3 +30,12 @@ export const exampleRole = {
   role            : faker.helpers.arrayElement(['Admin', 'Cliente', 'User']),
   status          : faker.datatype.boolean(),
 };
+
+export const examplePermission = {
+  id          : faker.string.uuid(),
+  permission  : faker.helpers.arrayElement(['read', 'write', 'delete', 'update', 'manage']),
+  description : faker.lorem.sentence(),
+  status      : faker.datatype.boolean(),
+  created     : faker.date.recent().toISOString(),
+  updated     : faker.date.recent().toISOString(),
+};

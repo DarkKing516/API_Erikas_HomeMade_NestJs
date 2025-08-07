@@ -5,8 +5,8 @@ export class BaseEntity {
   id          : string;
 
   @ApiProperty({ example: new Date() })
-  created?     : Date;
+  created?     : Date | string;
 
   @ApiProperty({ example: new Date() })
-  updated?    : Date;
+  updated?    : Date | string;
 }

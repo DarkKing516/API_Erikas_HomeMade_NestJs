@@ -35,12 +35,15 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-# dotenv environment variable files
-.env
+# Ignora todos los archivos .env*
+.env*
 .env.development.local
 .env.test.local
 .env.production.local
 .env.local
+
+# ¡Pero no ignores .env.example!
+!.env.example
 
 # temp directory
 .temp
@@ -56,7 +59,7 @@ pids
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # package-lock
-./package-lock.json
+package-lock.json
 
 # Logs
 logs.sqlite

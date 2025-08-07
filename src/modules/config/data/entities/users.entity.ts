@@ -1,9 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { BaseEntity } from '../../../../data/entities/baseEntity.entity';
-import { RolesEntity } from './roles.entity';
-import { exampleUser } from '../../../../common/utils/faker-examples';
+import {ApiProperty} from '@nestjs/swagger';
+import {BaseEntity} from '../../../../data/entities/baseEntity.entity';
+import {Roles} from './roles.entity';
+import {exampleUser} from '../../../../common/utils/faker-examples';
 
-export class UsersEntity extends BaseEntity {
+export class Users extends BaseEntity {
   @ApiProperty({ example: exampleUser.name })
   name     : string;
 
@@ -13,8 +13,8 @@ export class UsersEntity extends BaseEntity {
   @ApiProperty({ example: exampleUser.password })
   password : string;
 
-  @ApiProperty({ example: RolesEntity })
-  role     : RolesEntity;
+  @ApiProperty({ example: Roles })
+  role     : Roles;
 
   @ApiProperty({ example: exampleUser.phone })
   phone    : string;
