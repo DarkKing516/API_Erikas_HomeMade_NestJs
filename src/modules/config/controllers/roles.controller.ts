@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Query, Put, Delete } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ResponseApi } from 'src/common/dto/response-api.dto';
 import { RolService } from '../services/rol.service';
-import { RolesEntity } from '../data/entities/roles.entity';
+import { Roles } from '../data/entities/roles.entity';
 import { CreateRoleDto } from '../data/dto/role/create-role.dto';
 import { UpdateRoleDto } from '../data/dto/role/update-role.dto';
 import { DeleteRoleDto } from '../data/dto/role/delete-role.dto';
@@ -14,41 +14,31 @@ export class RolesController {
 
     @Get('get-all')
     @ApiOperation({ summary: 'Obtener todos los roles' })
-    @ApiResponse({ status: 200, description: 'Lista de roles', type: ResponseApi<RolesEntity[]> })
+    @ApiResponse({ status: 200, description: 'Lista de roles', type: ResponseApi<Roles[]> })
     @ApiResponse({ status: 204, description: 'No hay roles disponibles', type: ResponseApi })
-    async getAllRoles(): Promise<ResponseApi<RolesEntity[]>> {
+    async getAllRoles(): Promise<ResponseApi<Roles[]>> {
         const roles = await this.rolesService.getAllRoles();
         const statusCode = roles.length > 0 ? 200 : 204;
         const message = roles.length > 0 ? 'Roles obtenidos correctamente' : 'No hay roles disponibles';
-        return new ResponseApi<RolesEntity[]>(statusCode, message, roles);
+        return new ResponseApi<Roles[]>(statusCode, message, roles);
     }
 
     @Post('create')
     @ApiOperation({ summary: 'Crear un nuevo rol' })
-    @ApiResponse({ status: 201, description: 'Rol creado', type: ResponseApi<RolesEntity> })
+    @ApiResponse({ status: 201, description: 'Rol creado', type: ResponseApi<Roles> })
     @ApiResponse({ status: 409, description: 'El rol ya existe', type: ResponseApi })
-    async createRole(@Body() createRoleDto: CreateRoleDto): Promise<ResponseApi<RolesEntity>> {
+    async createRole(@Body() createRoleDto: CreateRoleDto): Promise<ResponseApi<Roles>> {
         const newRole = await this.rolesService.createRole(createRoleDto);
-        return new ResponseApi<RolesEntity>(201, 'Rol creado exitosamente', newRole);
-    }
-
-    @Get('search')
-    @ApiOperation({ summary: 'Obtener roles filtrados por nombre' })
-    @ApiQuery({ name: 'name', required: true, type: String, description: 'Filtra los roles por nombre', example: 'Admin' })
-    @ApiResponse({ status: 200, description: 'Rol encontrado', type: ResponseApi<RolesEntity> })
-    @ApiResponse({ status: 404, description: 'Rol no encontrado', type: ResponseApi })
-    async getRolesByName(@Query('name') name: string): Promise<ResponseApi<RolesEntity>> {
-        const role = await this.rolesService.getRoleByNameWithConverter(name);
-        return new ResponseApi<RolesEntity>(200, 'Rol encontrado', role);
+        return new ResponseApi<Roles>(201, 'Rol creado exitosamente', newRole);
     }
 
     @Put('update')
     @ApiOperation({ summary: 'Actualizar un rol' })
-    @ApiResponse({ status: 200, description: 'Rol actualizado correctamente', type: ResponseApi<RolesEntity> })
+    @ApiResponse({ status: 200, description: 'Rol actualizado correctamente', type: ResponseApi<Roles> })
     @ApiResponse({ status: 404, description: 'Rol no encontrado', type: ResponseApi })
-    async updateRole(@Body() updateData: UpdateRoleDto): Promise<ResponseApi<RolesEntity>> {
+    async updateRole(@Body() updateData: UpdateRoleDto): Promise<ResponseApi<Roles>> {
         const updatedRole = await this.rolesService.updateRole(updateData);
-        return new ResponseApi<RolesEntity>(200, 'Rol actualizado correctamente', updatedRole);
+        return new ResponseApi<Roles>(200, 'Rol actualizado correctamente', updatedRole);
     }
 
     @Delete('delete')

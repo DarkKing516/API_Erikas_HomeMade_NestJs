@@ -1,14 +1,14 @@
-import { RolesEntity } from '../../../../modules/config/data/entities/roles.entity';
+import {Roles} from '../../../../modules/config/data/entities/roles.entity';
 
 export const roleConverter = {
-  toFirestore(role: RolesEntity): FirebaseFirestore.DocumentData {
+  toFirestore(role: Roles): FirebaseFirestore.DocumentData {
     const { id, ...data } = role;
     return data;
   },
-  fromFirestore(snapshot: FirebaseFirestore.DocumentSnapshot): RolesEntity {
+  fromFirestore(snapshot: FirebaseFirestore.DocumentSnapshot): Roles {
     const data = snapshot.data();
     if (!data) throw new Error("Documento vacío");
 
-    return { id: snapshot.id, ...data } as RolesEntity;
+    return { id: snapshot.id, ...data } as Roles;
   }
 };

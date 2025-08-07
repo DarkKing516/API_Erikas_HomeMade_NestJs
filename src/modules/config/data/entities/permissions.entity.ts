@@ -2,10 +2,10 @@ import {ApiProperty} from '@nestjs/swagger';
 import {BaseEntity} from '../../../../data/entities/baseEntity.entity';
 import {exampleRole} from '../../../../common/utils/faker-examples';
 
-export class Roles extends BaseEntity {
+export class Permissions extends BaseEntity {
     @ApiProperty({example: exampleRole.role})
-    role   : string;
+    permission : string;
 
     @ApiProperty({example: exampleRole.status})
-    status : boolean;
+    status     : boolean;
 }
