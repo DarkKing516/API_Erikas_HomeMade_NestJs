@@ -6,9 +6,10 @@ import { redisClientFactory } from '../../lib/factory/redis-client.factory';
 import { RedisService } from '../../lib/services/redis.service';
 import {PermissionController} from "./controllers/permission.controller";
 import {PermissionService} from "./services/permission.service";
+import { UserController } from './controllers/user.controller';
 
 @Module({
-  controllers : [RolesController, PermissionController],
-  providers   : [RolService, UserService, PermissionService, redisClientFactory, RedisService],
+  controllers : [RolesController, PermissionController, UserController],
+  providers   : [RolService, PermissionService, UserService, redisClientFactory, RedisService],
 })
 export class ConfigModule {}

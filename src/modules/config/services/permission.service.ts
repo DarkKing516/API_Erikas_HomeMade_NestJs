@@ -11,12 +11,6 @@ export class PermissionService {
   private collectionWithConverter = this.collection.withConverter(permissionConverter);
 
   async getAllPermissions(): Promise<Permissions[]> {
-    // Ejemplo con Redis cache (puedes activar o desactivar)
-    // const cached = await this.redisService.get('permissions:all');
-    // if (cached) return JSON.parse(cached);
-
-    // await this.redisService.set('permissions:all', JSON.stringify(permissions));
-
     return await this.mapCollection<Permissions>(this.collectionWithConverter);
   }
 

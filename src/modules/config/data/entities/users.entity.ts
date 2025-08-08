@@ -1,7 +1,6 @@
-import {ApiProperty} from '@nestjs/swagger';
-import {BaseEntity} from '../../../../data/entities/baseEntity.entity';
-import {Roles} from './roles.entity';
-import {exampleUser} from '../../../../common/utils/faker-examples';
+import { ApiProperty } from '@nestjs/swagger';
+import { BaseEntity } from '../../../../data/entities/baseEntity.entity';
+import { exampleUser } from '../../../../common/utils/faker-examples';
 
 export class Users extends BaseEntity {
   @ApiProperty({ example: exampleUser.name })
@@ -13,12 +12,12 @@ export class Users extends BaseEntity {
   @ApiProperty({ example: exampleUser.password })
   password : string;
 
-  @ApiProperty({ example: Roles })
-  role     : Roles;
-
   @ApiProperty({ example: exampleUser.phone })
   phone    : string;
 
   @ApiProperty({ example: exampleUser.status })
-  status  : boolean;
+  status   : boolean;
+
+  @ApiProperty({ example: [exampleUser.id], isArray: true, required: false })
+  roles?   : string[]; // Solo los IDs
 }
