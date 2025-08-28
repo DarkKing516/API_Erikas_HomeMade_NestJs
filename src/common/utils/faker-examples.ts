@@ -39,3 +39,30 @@ export const examplePermission = {
   created     : faker.date.recent().toISOString(),
   updated     : faker.date.recent().toISOString(),
 };
+
+export const exampleMenu = {
+  id      : faker.string.uuid(),
+  titulo  : faker.helpers.arrayElement(['Dashboard', 'Reportes', 'Usuarios', 'Configuración']),
+  url     : `/${faker.helpers.slugify(faker.word.noun()).toLowerCase()}`,
+  icono   : faker.helpers.arrayElement([
+    'PieChartOutlined',
+    'UserOutlined',
+    'SettingOutlined',
+    'FileTextOutlined',
+  ]),
+  estado  : faker.datatype.boolean(),
+  permiso : {
+    id         : faker.string.uuid(),
+    permission : faker.helpers.arrayElement(['read', 'write', 'delete']),
+    status     : faker.datatype.boolean(),
+  },
+  submenus: [
+    {
+      id      : faker.string.uuid(),
+      titulo  : faker.helpers.arrayElement(['Sub Opción A', 'Sub Opción B']),
+      url     : `/${faker.helpers.slugify(faker.word.noun()).toLowerCase()}`,
+      icono   : faker.helpers.arrayElement(['FileOutlined', 'BarChartOutlined']),
+      estado  : faker.datatype.boolean(),
+    },
+  ],
+};

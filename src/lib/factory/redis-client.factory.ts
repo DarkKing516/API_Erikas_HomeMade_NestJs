@@ -6,9 +6,11 @@ import { REDIS_CLIENT, RedisClient } from '../const/redis';
 export const redisClientFactory: FactoryProvider<Promise<RedisClient>> = {
   provide: REDIS_CLIENT,
   useFactory: async () => {
+    if (!process.env.REDIS_URL) throw new Error('REDIS_URL no definido en .env');
     const redisUrl = process.env.REDIS_URL || `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`;
     const client = createClient({
-      url: redisUrl,
+      // url: redisUrl,
+      url: process.env.REDIS_URL,
       // Si usas Upstash con TLS, asegúrate de que en tu URL esté el esquema rediss://
       // o configura `socket: { tls: true }` si usas host/port
     });

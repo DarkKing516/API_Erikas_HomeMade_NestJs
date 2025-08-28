@@ -2,12 +2,12 @@ import { MenuEntity } from "../../../../modules/config/data/entities/menu.entity
 
 export const menuConverter = {
   toFirestore(menu: MenuEntity): FirebaseFirestore.DocumentData {
-    const { id, ...data } = menu;
+    const { id, permiso, submenus, id_permiso, ...rest } = menu;
 
     return {
-      ...data,
-      permiso : menu.permiso?.id || null,
-      submenus: menu.submenus?.map(sub => menuConverter.toFirestore(sub)) ?? [], // Recursividad
+      ...rest,
+      id_permiso, // obligatorio
+      submenus: submenus?.map(sub => menuConverter.toFirestore(sub)) ?? [],
     };
   },
 
@@ -16,20 +16,25 @@ export const menuConverter = {
     if (!data) throw new Error("Documento vacío");
 
     return {
-      id      : snapshot.id,
-      titulo  : data.titulo,
-      url     : data.url,
-      icono   : data.icono,
-      estado  : data.estado,
-      permiso : data.permiso,
-      submenus: (data.submenus ?? []).map((sub: any, idx: number) => ({
-        id      : sub.id ?? `submenu-${idx}`, // Asigna un ID temporal si no hay
-        titulo  : sub.titulo,
-        url     : sub.url,
-        icono   : sub.icono,
-        estado  : sub.estado,
-        permiso : sub.permiso ? { id: sub.permiso } : null,
-        submenus: sub.submenus ?? [],
+      id         : snapshot.id,
+      titulo     : data.titulo,
+      url        : data.url,
+      icono      : data.icono,
+      estado     : data.estado,
+      id_permiso : data.id_permiso, // lo que realmente guardaste
+      // permiso se llena luego haciendo el populate contra la colección de permisos
+      created    : data.created,
+      updated    : data.updated,
+      submenus   : (data.submenus ?? []).map((sub: any, idx: number) => ({
+        id         : sub.id ?? `submenu-${idx}`,
+        titulo     : sub.titulo,
+        url        : sub.url,
+        icono      : sub.icono,
+        estado     : sub.estado,
+        id_permiso : sub.id_permiso,
+        created    : sub.created ?? new Date().toISOString(),
+        updated    : sub.updated ?? new Date().toISOString(),
+        submenus   : sub.submenus ?? [],
       })),
     };
   }

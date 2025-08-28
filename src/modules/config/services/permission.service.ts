@@ -69,4 +69,20 @@ export class PermissionService {
     const snapshot = await ref.get();
     return snapshot.docs.map((doc) => doc.data() as T);
   }
+
+  async exists(id: string): Promise<boolean> {
+    const doc = await this.collection.doc(id).get();
+    return doc.exists;
+  }
+
+  async getById(id: string, throwIfNotFound = true): Promise<Permissions> {
+    const doc = await this.collectionWithConverter.doc(id).get();
+
+    if (!doc.exists) {
+      if (throwIfNotFound) throw new NotFoundException(`Permiso con id ${id} no encontrado`);
+      return {} as Permissions;
+    }
+
+    return doc.data()!;
+  }
 }
