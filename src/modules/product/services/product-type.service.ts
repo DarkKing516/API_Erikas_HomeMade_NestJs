@@ -1,6 +1,6 @@
 // src/roles/roles.service.ts
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { firestore } from 'src/lib/firebase/firebase-config';
+import { firestore } from "@app/firebase/firebase-config";
 import { TypeProductsEntity } from '../data/entities/product-types.entity';
 import { TypeProductsCreateDto } from '../data/dto/create-product-type.dto';
 import { TypeProductsUpdateDto } from '../data/dto/update-product-type.dto';

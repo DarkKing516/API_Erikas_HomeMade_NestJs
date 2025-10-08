@@ -6,7 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { LogsEntity } from './data/entities/Logs.entity';
 import { GlobalErrorInterceptor } from './common/interceptors/global-error.interceptor';
-import {ConfigModule as Config} from './modules/config/config.module';
+import { ConfigModule as Config } from './modules/config/config.module';
 import { LogService } from './lib/services/log.service';
 import { ProductsModule } from './modules/product/product.module';
 import { DateModule } from './modules/date/date.module';
@@ -32,7 +32,7 @@ import { DateModule } from './modules/date/date.module';
   providers   : [
     AppService,
     LogService,
-    { provide : APP_INTERCEPTOR, useClass: GlobalErrorInterceptor },
+    { provide: APP_INTERCEPTOR, useClass: GlobalErrorInterceptor },
   ],
 })
 export class AppModule {}

@@ -1,6 +1,6 @@
-import { Inject, Injectable, OnModuleDestroy } from '@nestjs/common';
-import { RedisClientType } from 'redis';
-import { REDIS_CLIENT, RedisClient } from '../const/redis';
+import { Inject, Injectable, OnModuleDestroy } from "@nestjs/common";
+import { RedisClientType } from "redis";
+import { REDIS_CLIENT, RedisClient } from "../const/redis";
 
 @Injectable()
 export class RedisService implements OnModuleDestroy {

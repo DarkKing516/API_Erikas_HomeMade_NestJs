@@ -1,6 +1,6 @@
 // src\data\firebse\FirebaseService.ts
 import { Injectable } from '@nestjs/common';
-import { firestore } from 'src/lib/firebase/firebase-config';
+import { firestore } from "@app/firebase/firebase-config";
 
 @Injectable()
 export class FirebaseService {

@@ -28,14 +28,12 @@ async function bootstrap() {
   // Aplicar el interceptor global (para manejar errores inesperados)
   // app.useGlobalInterceptors(new GlobalErrorInterceptor());
 
-  // await app.listen(process.env.PORT || 3000);
-  // Escuchar en el puerto
   const PORT = process.env.PORT || 3000;
   await app.listen(PORT);
 
-  // ¡Y aquí viene la magia!
   const url = await app.getUrl();
   console.log(`✨ Erika's API is up and cooking at: ${url} ✨`);
   console.log(`📚 Swagger docs: ${url}/api`);
 }
+
 (async () => await bootstrap())();

@@ -1,6 +1,6 @@
 import {ConflictException, Injectable, NotFoundException} from '@nestjs/common';
 import {permissionConverter} from "../../../lib/firebase/converters/config/permission-converter";
-import {firestore} from 'src/lib/firebase/firebase-config';
+import { firestore } from "@app/firebase/firebase-config";
 import {Permissions} from "../data/entities/permissions.entity";
 import {CreatePermissionDto} from "../data/dto/permission/create-permission.dto";
 import {UpdatePermissionDto} from "../data/dto/permission/update-permission.dto";

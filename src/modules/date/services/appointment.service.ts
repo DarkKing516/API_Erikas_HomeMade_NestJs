@@ -1,5 +1,5 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { firestore } from 'src/lib/firebase/firebase-config';
+import { firestore } from "@app/firebase/firebase-config";
 import { Timestamp } from 'firebase-admin/firestore';
 import { AppointmentsEntity } from '../data/entities/appointments.entity';
 import { CreateAppointmentDto } from '../data/dto/create-appoiment.dto';

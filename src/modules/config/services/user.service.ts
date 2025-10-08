@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { firestore } from 'src/lib/firebase/firebase-config';
+import { firestore } from "@app/firebase/firebase-config";
 import { CreateUserDto } from '../data/dto/user/create-user.dto';
 import { roleConverter } from '../../../lib/firebase/converters/config/role-converter';
 import { UserConverter } from '../../../lib/firebase/converters/config/user-converter';

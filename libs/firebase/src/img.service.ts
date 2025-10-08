@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { bucket } from '../firebase/firebase-config';
-import * as crypto from 'crypto';
+import { Injectable } from "@nestjs/common";
+import * as crypto from "crypto";
+import { bucket } from "@app/firebase/firebase-config";
 
 @Injectable()
 export class ImgService {
@@ -14,19 +14,19 @@ export class ImgService {
       },
     });
 
-    stream.on('error', (err) => {
-      throw new Error('Error cargando imagen en bucket: ' + err.message);
+    stream.on("error", (err) => {
+      throw new Error("Error cargando imagen en bucket: " + err.message);
     });
 
-    stream.on('finish', () => {
-      console.log('✅ Imagen subida exitosamente');
+    stream.on("finish", () => {
+      console.log("✅ Imagen subida exitosamente");
     });
 
     stream.end(file.buffer);
 
     const [signedUrl] = await fileUpload.getSignedUrl({
-      action: 'read',
-      expires: '01-01-2100',
+      action: "read",
+      expires: "01-01-2100",
     });
 
     return signedUrl;
@@ -54,15 +54,15 @@ export class ImgService {
       const urls = await Promise.all(
         files.map(async (file) => {
           const [url] = await file.getSignedUrl({
-            action: 'read',
-            expires: '01-01-2100',
+            action: "read",
+            expires: "01-01-2100",
           });
           return url;
         }),
       );
       return urls;
     } catch (error) {
-      console.error('❌ Error obteniendo imágenes:', error.message);
+      console.error("❌ Error obteniendo imágenes:", error.message);
       return [];
     }
   }

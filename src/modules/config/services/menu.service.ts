@@ -4,7 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { firestore } from 'src/lib/firebase/firebase-config';
+import { firestore } from "@app/firebase/firebase-config";
 import { menuConverter } from '../../../lib/firebase/converters/config/menu-entity-converter';
 import { MenuEntity } from '../data/entities/menu.entity';
 import { mapCollection } from '../../../common/utils/map-collection';

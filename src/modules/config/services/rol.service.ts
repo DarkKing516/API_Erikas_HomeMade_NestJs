@@ -1,17 +1,13 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { firestore } from 'src/lib/firebase/firebase-config';
-import { Roles } from '../data/entities/roles.entity';
-import { CreateRoleDto } from '../data/dto/role/create-role.dto';
-import { UpdateRoleDto } from '../data/dto/role/update-role.dto';
-import { fromSnapshot } from '../../../common/utils/functions';
-import { roleConverter } from '../../../lib/firebase/converters/config/role-converter';
-import { permissionConverter } from '../../../lib/firebase/converters/config/permission-converter';
-import { ReturnRoleDto } from '../data/dto/role/return-role.dto';
-import { Permissions } from '../data/entities/permissions.entity';
+import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import { Roles } from "../data/entities/roles.entity";
+import { CreateRoleDto } from "../data/dto/role/create-role.dto";
+import { UpdateRoleDto } from "../data/dto/role/update-role.dto";
+import { fromSnapshot } from "../../../common/utils/functions";
+import { roleConverter } from "../../../lib/firebase/converters/config/role-converter";
+import { permissionConverter } from "../../../lib/firebase/converters/config/permission-converter";
+import { ReturnRoleDto } from "../data/dto/role/return-role.dto";
+import { Permissions } from "../data/entities/permissions.entity";
+import { firestore } from "@app/firebase/firebase-config";
 
 @Injectable()
 export class RolService {
@@ -23,22 +19,7 @@ export class RolService {
 
   async getAllRoles(): Promise<ReturnRoleDto[]> {
     const rawRoles = await this.mapCollection<Roles>(this.collection);
-    return await Promise.all(
-      rawRoles.map((role) => this.buildReturnRole(role)),
-    );
-  }
-
-  async getAllRolesRedis(): Promise<ReturnRoleDto[]> {
-    // const cached = await this.redisService.get('roles:all');
-    // if (cached) return JSON.parse(cached);
-
-    const rawRoles = await this.mapCollection<Roles>(this.collection);
-    const formatRoles = await Promise.all(
-      rawRoles.map((role) => this.buildReturnRole(role)),
-    );
-
-    // await this.redisService.set('roles:all', JSON.stringify(formatRoles));
-    return formatRoles;
+    return await Promise.all(rawRoles.map((role) => this.buildReturnRole(role)),);
   }
 
   async createRole(createRoleDto: CreateRoleDto): Promise<boolean> {
@@ -51,10 +32,10 @@ export class RolService {
     const nowString = new Date().toISOString();
     const newRole: Roles = {
       ...createRoleDto,
-      id: newRoleRef.id,
-      created: nowString,
-      updated: nowString,
-      status: true,
+      id      : newRoleRef.id,
+      created : nowString,
+      updated : nowString,
+      status  : true,
     };
 
     await newRoleRef.withConverter(roleConverter).set(newRole);
@@ -62,9 +43,7 @@ export class RolService {
   }
 
   async updateRole(updateData: UpdateRoleDto): Promise<boolean> {
-    const roleRef = this.collectionWithConverter.doc(
-      updateData.id.toLowerCase(),
-    );
+    const roleRef = this.collectionWithConverter.doc(updateData.id);
     const roleSnapshot = await roleRef.get();
 
     if (!roleSnapshot.exists) throw new NotFoundException('Rol no encontrado');
@@ -81,8 +60,7 @@ export class RolService {
 
     const updatedSnapshot = await roleRef.get();
     const updatedRole = updatedSnapshot.data();
-    if (!updatedRole)
-      throw new NotFoundException('Error al recuperar el rol actualizado');
+    if (!updatedRole) throw new NotFoundException('Error al recuperar el rol actualizado');
 
     return true;
   }
@@ -114,10 +92,7 @@ export class RolService {
     const invalidIds = permissionIds.filter(
       (_, index) => !permissionSnapshots[index].exists,
     );
-    if (invalidIds.length > 0)
-      throw new NotFoundException(
-        `Permisos no encontrados: ${invalidIds.join(', ')}`,
-      );
+    if (invalidIds.length > 0) throw new NotFoundException(`Permisos no encontrados: ${invalidIds.join(', ')}`,);
   }
 
   private async populatePermissions(
