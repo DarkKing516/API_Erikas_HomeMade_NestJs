@@ -1,7 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { exampleUser } from '../../../../../common/utils/faker-examples';
+import { BaseEntity } from '../../../../../data/entities/baseEntity.entity';
+import { ReturnRoleDto } from '../role/return-role.dto';
 
-export class CreateUserDto {
+export class ReturnUserDto extends BaseEntity {
   @ApiProperty({ example: exampleUser.name })
   name     : string;
 
@@ -11,9 +13,12 @@ export class CreateUserDto {
   @ApiProperty({ example: exampleUser.password })
   password : string;
 
-  @ApiProperty({ example: [exampleUser.id], isArray: true, required: false })
-  roleId?  : string[];
-
   @ApiProperty({ example: exampleUser.phone })
   phone    : string;
+
+  @ApiProperty({ example: exampleUser.status })
+  status   : boolean;
+
+  @ApiProperty({ example: ReturnRoleDto, isArray: true })
+  roles?   : ReturnRoleDto[];
 }
