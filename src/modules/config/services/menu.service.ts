@@ -25,38 +25,42 @@ export class MenuService {
 
   async createMenu(dto: CreateMenuDto): Promise<boolean> {
     const permisoExists = await this.permissionService.exists(dto.id_permiso);
-    if (!permisoExists) throw new BadRequestException(`El permiso del menu "${dto.titulo}" no existe`);
-    if (dto.submenus && dto.submenus.length > 0)
-      for (const sub of dto.submenus) {
+    if (!permisoExists) throw new BadRequestException(`El permiso del menú "${dto.titulo}" no existe`);
+
+    // Validar permisos de todos los niveles (recursivo)
+    const validateSubmenuPermissions = async (submenus?: CreateMenuDto[]) => {
+      if (!submenus) return;
+      for (const sub of submenus) {
         const subPermisoExists = await this.permissionService.exists(sub.id_permiso);
-        if (!subPermisoExists) throw new BadRequestException(`El permiso del submenu "${sub.titulo}" no existe`);
+        if (!subPermisoExists) throw new BadRequestException(`El permiso del submenú "${sub.titulo}" no existe`);
+        await validateSubmenuPermissions(sub.submenus);
       }
+    };
+    await validateSubmenuPermissions(dto.submenus);
+
     const existing = await this.getMenuByTitle(dto.titulo);
     if (existing) throw new ConflictException('El menú ya existe');
 
-    const newMenuRef = this.collection.doc();
     const nowString = new Date().toISOString();
 
+    // 🌀 Función recursiva que convierte DTO a entidad
+    const mapMenuRecursive = (menuDto: CreateMenuDto): MenuEntity => ({
+      id         : firestore.collection('menus').doc().id,
+      titulo     : menuDto.titulo,
+      url        : menuDto.url,
+      icono      : menuDto.icono,
+      estado     : menuDto.estado ?? true,
+      id_permiso : menuDto.id_permiso,
+      created    : nowString,
+      updated    : nowString,
+      submenus   : menuDto.submenus?.map(mapMenuRecursive) ?? [],
+    });
+
+    // Crear el menú raíz
+    const newMenuRef = this.collection.doc();
     const newMenu: MenuEntity = {
-      id       : newMenuRef.id,
-      titulo   : dto.titulo,
-      url      : dto.url,
-      icono    : dto.icono,
-      estado   : dto.estado ?? true,
-      id_permiso: dto.id_permiso,
-      created  : nowString,
-      updated  : nowString,
-      submenus : dto.submenus?.map(sub => ({
-        id         : firestore.collection('menus').doc().id,
-        titulo     : sub.titulo,
-        url        : sub.url,
-        icono      : sub.icono,
-        estado     : sub.estado ?? true,
-        id_permiso : sub.id_permiso,
-        created    : nowString,
-        updated    : nowString,
-        submenus   : [], // si quieres permitir sub-submenús, aquí haces recursivo
-      })) ?? [],
+      ...mapMenuRecursive(dto),
+      id: newMenuRef.id, // sobrescribimos el ID raíz
     };
 
     await newMenuRef.withConverter(menuConverter).set(newMenu);
