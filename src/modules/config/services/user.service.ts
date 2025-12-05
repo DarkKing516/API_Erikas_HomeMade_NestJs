@@ -1,18 +1,14 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { firestore } from "@app/firebase/firebase-config";
-import { CreateUserDto } from '../data/dto/user/create-user.dto';
-import { roleConverter } from '../../../lib/firebase/converters/config/role-converter';
-import { UserConverter } from '../../../lib/firebase/converters/config/user-converter';
-import { Users } from '../data/entities/users.entity';
-import { mapCollection } from '../../../common/utils/map-collection';
-import { ReturnUserDto } from '../data/dto/user/return-user.dto';
-import { Roles } from '../data/entities/roles.entity';
-import { ReturnRoleDto } from '../data/dto/role/return-role.dto';
-import { RolService } from './rol.service';
+import { CreateUserDto } from "../data/dto/user/create-user.dto";
+import { roleConverter } from "../../../lib/firebase/converters/config/role-converter";
+import { UserConverter } from "../../../lib/firebase/converters/config/user-converter";
+import { Users } from "../data/entities/users.entity";
+import { mapCollection } from "../../../common/utils/map-collection";
+import { ReturnUserDto } from "../data/dto/user/return-user.dto";
+import { Roles } from "../data/entities/roles.entity";
+import { ReturnRoleDto } from "../data/dto/role/return-role.dto";
+import { RolService } from "./rol.service";
 
 @Injectable()
 export class UserService {
@@ -95,9 +91,9 @@ export class UserService {
 
     const nowString = new Date().toISOString();
     const newUser: Users = {
-      id      : newUserRef.id,
-      created : nowString,
-      updated : nowString,
+      id       : newUserRef.id,
+      created  : nowString,
+      updated  : nowString,
       ...dataCreate,
       email   : normalizedEmail,
       status  : true,
