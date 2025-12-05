@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import { firestore } from "@app/firebase/firebase-config";
 import { CreateUserDto } from '../data/dto/user/create-user.dto';
 import { roleConverter } from '../../../lib/firebase/converters/config/role-converter';
@@ -74,6 +78,10 @@ export class UserService {
 
   async createUser(dataCreate: CreateUserDto): Promise<boolean> {
     const newUserRef = this.collectionUser.doc();
+    const normalizedEmail = dataCreate.email.trim().toLowerCase();
+
+    const existing = await this.collectionUser.where('email', '==', normalizedEmail).limit(1).get();
+    if (!existing.empty) throw new ConflictException(`Ya existe un usuario registrado con el correo ${dataCreate.email}`);
 
     // Si no se mandó ningún rol, usamos "cliente"
     const roleIds = (dataCreate.roleId && dataCreate.roleId.length > 0) ? dataCreate.roleId.map(role => role.toLowerCase()) : ['cliente'];
@@ -91,6 +99,7 @@ export class UserService {
       created : nowString,
       updated : nowString,
       ...dataCreate,
+      email   : normalizedEmail,
       status  : true,
       roles   : roleChecks,
     };
