@@ -10,7 +10,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     }
 
     canActivate(context: ExecutionContext) {
-        // return true; // Descomentar para saltar seguridad JWT en desarrollo
+        return true; // Descomentar para saltar seguridad JWT en desarrollo
         const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
             context.getHandler(),
             context.getClass(),

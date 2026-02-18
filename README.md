@@ -133,7 +133,13 @@ Este proyecto ha sido desarrollado con **NestJS**, un framework progresivo para 
 ![GitHub Repo Size](https://img.shields.io/github/repo-size/DarkKing516/API_Erikas_HomeMade_NestJs?style=for-the-badge)
 
 
-## 👥 Colaboradores
+---
+ 
+ ## 🛠️ Reglas del Proyecto
+ - **Seguridad**: Usar siempre `@RequirePermissions()` con el tipado estricto.
+ - **Documentación**: Usar `faker` (vía `faker-examples.ts` o en su defecto algun atributo de la libreria `@faker-js/faker`) para todos los ejemplos en `@ApiProperty` .
+ 
+ ## 👥 Colaboradores
 - [![DarkKing516](https://github.com/DarkKing516.png?size=50)](https://github.com/DarkKing516)
 - [![Dan2572](https://github.com/Dan2572.png?size=50)](https://github.com/Dan2572)
 - [![Ikaedso](https://github.com/Ikaedso.png?size=50)](https://github.com/Ikaedso)

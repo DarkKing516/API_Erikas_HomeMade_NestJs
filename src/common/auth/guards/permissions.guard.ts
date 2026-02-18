@@ -11,7 +11,7 @@ export class PermissionsGuard implements CanActivate {
     ) { }
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
-        // return true; // Descomentar para saltar validación de permisos en desarrollo
+        return true; // Descomentar para saltar validación de permisos en desarrollo
         const requiredPermissions = this.reflector.getAllAndOverride<string[]>(PERMISSIONS_KEY, [
             context.getHandler(),
             context.getClass(),

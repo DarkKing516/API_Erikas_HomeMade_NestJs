@@ -43,6 +43,7 @@ const result = check ? 'A' : 'B';
 Los DTOs son obligatorios para entrada/salida y **DEBEN** incluir siempre:
 1. Decoradores de validación (`class-validator`).
 2. Decorador `@ApiProperty()` de `@nestjs/swagger` para la documentación.
+    - **CRÍTICO**: El campo `example` de `@ApiProperty` debe usar **siempre** los utilitarios de la librería `faker` definidos en [faker-examples.ts](file:///c:/Users/Usuario/Documents/ERIKAS/API_Erikas_HomeMade_NestJs/src/common/utils/faker-examples.ts) o en su defecto algun atributo de la libreria `@faker-js/faker`.
 
 ```typescript
 export class CreateProductDto {
