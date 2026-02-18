@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Timestamp } from 'firebase-admin/firestore';
 import { BaseEntity } from '../../../../data/entities/baseEntity.entity';
-import { AppointmentsEnum } from '../../../../common/enum/appointmentsEnum';
+import { AppointmentsEnum } from '../../../../common/enum/appointments.enum';
 import { exampleAppointment } from '../../../../common/utils/faker-examples';
 
 export class AppointmentsEntity extends BaseEntity {

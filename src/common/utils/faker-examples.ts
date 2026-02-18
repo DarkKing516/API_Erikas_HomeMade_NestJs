@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { AppointmentsEnum } from '../enum/appointmentsEnum';
+import { AppointmentsEnum } from '../enum/appointments.enum';
 
 export const exampleUser = {
   id       : faker.string.uuid(),

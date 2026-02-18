@@ -4,7 +4,7 @@ import { Timestamp } from 'firebase-admin/firestore';
 import { AppointmentsEntity } from '../data/entities/appointments.entity';
 import { CreateAppointmentDto } from '../data/dto/create-appoiment.dto';
 import { UpdateAppointmentDto } from '../data/dto/update-appoiment.dto';
-import { AppointmentsEnum } from '../../../common/enum/appointmentsEnum';
+import { AppointmentsEnum } from '../../../common/enum/appointments.enum';
 import { AppointmentConverter } from '../../../lib/firebase/converters/date/appointment-converter';
 
 @Injectable()

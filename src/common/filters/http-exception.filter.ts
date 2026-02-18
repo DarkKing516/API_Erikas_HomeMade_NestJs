@@ -11,11 +11,15 @@ export class HttpExceptionFilter implements ExceptionFilter {
         const status = exception.getStatus();
         const errorResponse = exception.getResponse();
 
-        // Verifica si `errorResponse` es un objeto con `message`, o si es un string directamente
-        const message =
-            typeof errorResponse === 'string'
-                ? errorResponse
-                : errorResponse['message'] || 'Error inesperado';
+        // Extraer el mensaje, manejando strings y arrays (errores de validación)
+        let message = 'Error inesperado';
+
+        if (typeof errorResponse === 'string') {
+            message = errorResponse;
+        } else if (typeof errorResponse === 'object' && errorResponse !== null) {
+            const rawMessage = errorResponse['message'];
+            message = Array.isArray(rawMessage) ? rawMessage.join(', ') : rawMessage || exception.message;
+        }
 
         response.status(status).json(
             new ResponseApi(status, message, null)

@@ -1,9 +1,10 @@
-import {ConflictException, Injectable, NotFoundException} from '@nestjs/common';
-import {permissionConverter} from "../../../lib/firebase/converters/config/permission-converter";
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { permissionConverter } from "../../../lib/firebase/converters/config/permission-converter";
 import { firestore } from "@app/firebase/firebase-config";
-import {Permissions} from "../data/entities/permissions.entity";
-import {CreatePermissionDto} from "../data/dto/permission/create-permission.dto";
-import {UpdatePermissionDto} from "../data/dto/permission/update-permission.dto";
+import { Permissions } from "../data/entities/permissions.entity";
+import { CreatePermissionDto } from "../data/dto/permission/create-permission.dto";
+import { UpdatePermissionDto } from "../data/dto/permission/update-permission.dto";
+import { DEFAULT_PERMISSIONS } from '../../../common/enum/permissions.constant';
 
 @Injectable()
 export class PermissionService {
@@ -15,19 +16,18 @@ export class PermissionService {
   }
 
   async createPermission(createPermissionDto: CreatePermissionDto): Promise<boolean> {
-    const existing = await this.getPermissionByName(createPermissionDto.permission);
-    if (existing) throw new ConflictException('El permiso ya existe');
+    const existing = await this.exists(createPermissionDto.id);
+    if (existing) throw new ConflictException(`El permiso ${createPermissionDto.id} ya existe`);
 
-    const newPermissionRef = this.collection.doc();
+    const newPermissionRef = this.collection.doc(createPermissionDto.id);
     const nowString = new Date().toISOString();
 
     const newPermission: Permissions = {
       ...createPermissionDto,
-      id      : newPermissionRef.id,
-      created : nowString,
-      updated : nowString,
-      status  : true,
-    } as Permissions;
+      created: nowString,
+      updated: nowString,
+      status: true,
+    };
 
     await newPermissionRef.withConverter(permissionConverter).set(newPermission);
     return true;
@@ -39,12 +39,11 @@ export class PermissionService {
 
     if (!snapshot.exists) throw new NotFoundException('Permiso no encontrado');
 
-    const { id, ...dataToUpdate } = updateData;
-    await permissionRef.update({ ...dataToUpdate, updated: new Date().toISOString() });
-
-    const updatedSnapshot = await permissionRef.get();
-    const updatedPermission = updatedSnapshot.data();
-    if (!updatedPermission) throw new NotFoundException('Error al recuperar el permiso actualizado');
+    // Solo permitimos editar el nombre (permission)
+    await permissionRef.update({
+      permission: updateData.permission,
+      updated: new Date().toISOString()
+    });
 
     return true;
   }
@@ -56,6 +55,47 @@ export class PermissionService {
     if (!snapshot.exists) throw new NotFoundException('Permiso no encontrado');
 
     await permissionRef.delete();
+    return true;
+  }
+
+  async deleteAllPermissions(): Promise<boolean> {
+    const snapshot = await this.collection.get();
+    const batch = firestore.batch();
+
+    snapshot.docs.forEach((doc) => batch.delete(doc.ref));
+    await batch.commit();
+
+    return true;
+  }
+
+  async syncPermissions(): Promise<boolean> {
+    const batch = firestore.batch();
+    const now = new Date().toISOString();
+
+    for (const def of DEFAULT_PERMISSIONS) {
+      const ref = this.collectionWithConverter.doc(def.id);
+      const snapshot = await ref.get();
+
+      if (!snapshot.exists) {
+        batch.set(ref, {
+          id: def.id,
+          permission: def.permission,
+          status: true,
+          created: now,
+          updated: now,
+        } as Permissions);
+      } else {
+        const currentData = snapshot.data();
+        if (currentData && currentData.permission !== def.permission) {
+          batch.update(ref, {
+            permission: def.permission,
+            updated: now
+          });
+        }
+      }
+    }
+
+    await batch.commit();
     return true;
   }
 

@@ -1,8 +1,14 @@
-import {ApiProperty} from '@nestjs/swagger';
-import {CreatePermissionDto} from './create-permission.dto';
-import {exampleRole} from '../../../../../common/utils/faker-examples';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString } from 'class-validator';
 
-export class UpdatePermissionDto extends CreatePermissionDto {
-    @ApiProperty({example: exampleRole.role})
+export class UpdatePermissionDto {
+    @ApiProperty({ example: 'create:user', description: 'ID del permiso a actualizar' })
+    @IsString()
+    @IsNotEmpty()
     id: string;
+
+    @ApiProperty({ example: 'Crear usuarios (Editado)', description: 'Nuevo nombre para el permiso' })
+    @IsString()
+    @IsNotEmpty()
+    permission: string;
 }
