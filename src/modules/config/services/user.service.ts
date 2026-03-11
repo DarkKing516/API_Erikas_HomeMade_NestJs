@@ -1,6 +1,8 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { firestore } from "@app/firebase/firebase-config";
 import { CreateUserDto } from "../data/dto/user/create-user.dto";
+import { UpdateUserDto } from "../data/dto/user/update-user.dto";
+import { UpdateUserRoleDto } from "../data/dto/user/update-user-role.dto";
 import { roleConverter } from "../../../lib/firebase/converters/config/role-converter";
 import { UserConverter } from "../../../lib/firebase/converters/config/user-converter";
 import { Users } from "../data/entities/users.entity";
@@ -102,5 +104,69 @@ export class UserService {
 
     await newUserRef.withConverter(UserConverter).set(newUser);
     return true;
+  }
+
+  async updateProfile(userId: string, updateData: UpdateUserDto): Promise<ReturnUserDto> {
+    const userRef = this.collectionUser.doc(userId);
+    const userSnap = await userRef.get();
+    
+    if (!userSnap.exists) {
+      throw new NotFoundException(`Usuario no encontrado`);
+    }
+
+    const updates: Partial<Users> = { updated: new Date().toISOString() };
+    
+    if (updateData.name !== undefined) updates.name = updateData.name;
+    if (updateData.email !== undefined) {
+      const normalizedEmail = updateData.email.trim().toLowerCase();
+      // Check if email is already taken by another user
+      const existing = await this.collectionUser.where('email', '==', normalizedEmail).get();
+      if (!existing.empty && existing.docs[0].id !== userId) {
+        throw new ConflictException(`Ya existe un usuario registrado con el correo ${updateData.email}`);
+      }
+      updates.email = normalizedEmail;
+    }
+    if (updateData.phone !== undefined) updates.phone = updateData.phone;
+
+    if (updateData.roleId !== undefined && updateData.roleId.length > 0) {
+      const roleIds = updateData.roleId.map(role => role.toLowerCase());
+      const roleChecks = await Promise.all(roleIds.map(async (roleId) => {
+        const snapshot = await this.collectionRol.doc(roleId).get();
+        if (!snapshot.exists) throw new NotFoundException(`Rol no encontrado: ${roleId}`);
+        return snapshot.id;
+      }));
+      updates.roles = roleChecks;
+    }
+
+    await userRef.update(updates);
+    
+    return this.getUserWithRoles(userId);
+  }
+
+  async updateRole(userId: string, updateRoleData: UpdateUserRoleDto): Promise<ReturnUserDto> {
+    const userRef = this.collectionUser.doc(userId);
+    const userSnap = await userRef.get();
+    
+    if (!userSnap.exists) {
+      throw new NotFoundException(`Usuario no encontrado`);
+    }
+
+    const updates: Partial<Users> = { updated: new Date().toISOString() };
+
+    if (updateRoleData.roleId !== undefined && updateRoleData.roleId.length > 0) {
+      const roleIds = updateRoleData.roleId.map(role => role.toLowerCase());
+      const roleChecks = await Promise.all(roleIds.map(async (roleId) => {
+        const snapshot = await this.collectionRol.doc(roleId).get();
+        if (!snapshot.exists) throw new NotFoundException(`Rol no encontrado: ${roleId}`);
+        return snapshot.id;
+      }));
+      updates.roles = roleChecks;
+    } else {
+       updates.roles = []; // Or maybe default to 'cliente'. Let's allow empty roles if they pass empty array, or maybe throw error. We'll set empty if passed.
+    }
+
+    await userRef.update(updates);
+    
+    return this.getUserWithRoles(userId);
   }
 }

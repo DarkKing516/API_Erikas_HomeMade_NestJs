@@ -66,3 +66,6 @@ logs.sqlite
 
 # KeyErikas
 erika-s-homemade-firebase-adminsdk.json
+/.agent/
+/.gemini/
+/openspec/
