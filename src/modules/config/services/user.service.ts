@@ -82,7 +82,7 @@ export class UserService {
     if (!existing.empty) throw new ConflictException(`Ya existe un usuario registrado con el correo ${dataCreate.email}`);
 
     // Si no se mandó ningún rol, usamos "cliente"
-    const roleIds = (dataCreate.roleId && dataCreate.roleId.length > 0) ? dataCreate.roleId.map(role => role.toLowerCase()) : ['cliente'];
+    const roleIds = (dataCreate.roleId && dataCreate.roleId.length > 0) ? dataCreate.roleId.map(role => role.toLowerCase()) : ['client'];
 
     // Validamos que todos los roles existan
     const roleChecks = await Promise.all(roleIds.map(async (roleId) => {
@@ -147,15 +147,12 @@ export class UserService {
     const userRef = this.collectionUser.doc(userId);
     const userSnap = await userRef.get();
     
-    if (!userSnap.exists) {
-      throw new NotFoundException(`Usuario no encontrado`);
-    }
+    if (!userSnap.exists) throw new NotFoundException(`Usuario no encontrado`);
 
     const updates: Partial<Users> = { updated: new Date().toISOString() };
 
     if (updateRoleData.roleId !== undefined && updateRoleData.roleId.length > 0) {
-      const roleIds = updateRoleData.roleId.map(role => role.toLowerCase());
-      const roleChecks = await Promise.all(roleIds.map(async (roleId) => {
+      const roleChecks = await Promise.all(updateRoleData.roleId.map(async (roleId) => {
         const snapshot = await this.collectionRol.doc(roleId).get();
         if (!snapshot.exists) throw new NotFoundException(`Rol no encontrado: ${roleId}`);
         return snapshot.id;

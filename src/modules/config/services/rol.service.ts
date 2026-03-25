@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 import { Roles } from "../data/entities/roles.entity";
 import { CreateRoleDto } from "../data/dto/role/create-role.dto";
 import { UpdateRoleDto } from "../data/dto/role/update-role.dto";
@@ -11,15 +11,17 @@ import { firestore } from "@app/firebase/firebase-config";
 
 @Injectable()
 export class RolService {
+  private readonly PROTECTED_ROLES = ['admin', 'client', 'develop'];
   private collection = firestore.collection('roles');
   private collectionWithConverter = firestore
     .collection('roles')
     .withConverter(roleConverter);
   // constructor(private readonly redisService: RedisService) {} // TODO: usar caché para actualizar en tiempo real
 
-  async getAllRoles(): Promise<ReturnRoleDto[]> {
+  async getAllRoles(skipPermissions = false): Promise<ReturnRoleDto[]> {
     const rawRoles = await this.mapCollection<Roles>(this.collection);
-    return await Promise.all(rawRoles.map((role) => this.buildReturnRole(role)),);
+    if (skipPermissions) return rawRoles as unknown as ReturnRoleDto[];
+    return await Promise.all(rawRoles.map((role) => this.buildReturnRole(role)));
   }
 
   async createRole(createRoleDto: CreateRoleDto): Promise<boolean> {
@@ -66,6 +68,7 @@ export class RolService {
   }
 
   async deleteRole(idRol: string): Promise<boolean> {
+    if (this.PROTECTED_ROLES.includes(idRol.toLowerCase())) throw new ForbiddenException('No se puede eliminar un rol necesario para el sistema');
     const roleRef = this.collection.doc(idRol);
     const roleSnapshot = await roleRef.get();
     if (!roleSnapshot.exists) throw new NotFoundException('Rol no encontrado');

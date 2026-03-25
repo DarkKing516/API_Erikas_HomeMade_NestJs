@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, } from "@nestjs/common";
 import { ApiOkResponse, ApiOperation, ApiResponse, ApiTags, } from "@nestjs/swagger";
 import { ResponseApi } from 'src/common/dto/response-api.dto';
 import { RolService } from '../services/rol.service';
@@ -18,8 +18,8 @@ export class RolesController {
   @ApiOperation({ summary: 'Obtener todos los roles' })
   @ApiResponse({ status: 200, description: 'Lista de roles', type: ResponseApi<ReturnRoleDto[]> })
   @ApiResponse({ status: 204, description: 'No hay roles disponibles', type: ResponseApi })
-  async getAllRoles(): Promise<ResponseApi<ReturnRoleDto[]>> {
-    const roles = await this.rolesService.getAllRoles();
+  async getAllRoles(@Query('skipPermissions') skipPermissions?: string): Promise<ResponseApi<ReturnRoleDto[]>> {
+    const roles = await this.rolesService.getAllRoles(skipPermissions === 'true');
     const statusCode = roles.length > 0 ? 200 : 204;
     const message = roles.length > 0 ? 'Roles obtenidos correctamente' : 'No hay roles disponibles';
     return new ResponseApi<ReturnRoleDto[]>(statusCode, message, roles);
