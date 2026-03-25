@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { firestore } from "@app/firebase/firebase-config";
 import { roleConverter } from "../../../lib/firebase/converters/config/role-converter";
@@ -8,7 +8,6 @@ import { ReturnUserDto } from "../data/dto/user/return-user.dto";
 import { ReturnRoleDto } from "../data/dto/role/return-role.dto";
 import { RolService } from "./rol.service";
 import { LoginUserDto } from "../data/dto/login-user.dto";
-import { CryptoUtil } from "../../../common/utils/crypto.util";
 
 @Injectable()
 export class AuthService {
@@ -27,14 +26,14 @@ export class AuthService {
     const snap = await this.collectionUser.where("email", "==", normalizedEmail).limit(1).get();
     if (snap.empty) throw new NotFoundException(`Usuario no encontrado`);
 
-    const userDoc = snap.docs[0];
-    const user = userDoc.data() as Users;
-
-    const decryptedPassword = CryptoUtil.decrypt(model.password);
-    const decryptedPasswordUser = CryptoUtil.decrypt(user.password);
-    // console.log(decryptedPassword);
-
-    if (decryptedPasswordUser !== decryptedPassword) throw new ConflictException(`Credenciales inválidas`);
+    /*     const userDoc = snap.docs[0];
+        const user = userDoc.data() as Users;
+    
+        const decryptedPassword = CryptoUtil.decrypt(model.password);
+        const decryptedPasswordUser = CryptoUtil.decrypt(user.password);
+        // console.log(decryptedPassword);
+    
+        if (decryptedPasswordUser !== decryptedPassword) throw new ConflictException(`Credenciales inválidas`); */
 
     const userWithRoles = await this.getUserPermissions(normalizedEmail);
 

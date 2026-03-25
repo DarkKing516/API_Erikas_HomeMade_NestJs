@@ -13,7 +13,7 @@ export class AuthController {
   constructor(private readonly service: AuthService) { }
 
   @Post('login-user')
-  @ApiOperation({ summary: 'Verificar correo y contraseña' })
+  @ApiOperation({ summary: 'Iniciar sesión con correo' })
   async login(@Body() createUserDto: LoginUserDto): Promise<ResponseApi<{ user: ReturnUserDto, accessToken: string }>> {
     const result = await this.service.login(createUserDto);
     return new ResponseApi(HttpStatus.CREATED, 'Login exitoso', result);

@@ -69,3 +69,9 @@ erika-s-homemade-firebase-adminsdk.json
 /.agent/
 /.gemini/
 /openspec/
+/apply_instr.json
+/design_instr.json
+/proposal_instr.json
+/specs_instr.json
+/status.json
+/tasks_instr.json

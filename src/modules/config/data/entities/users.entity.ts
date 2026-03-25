@@ -9,9 +9,6 @@ export class Users extends BaseEntity {
   @ApiProperty({ example: exampleUser.email })
   email    : string;
 
-  @ApiProperty({ example: exampleUser.password })
-  password : string;
-
   @ApiProperty({ example: exampleUser.phone })
   phone    : string;
 

@@ -5,7 +5,6 @@ export const exampleUser = {
   id       : faker.string.uuid(),
   name     : faker.person.fullName(),
   email    : faker.internet.email(),
-  password : faker.internet.password({ length: 12 }),
   phone    : faker.phone.number(),
   status   : faker.datatype.boolean(),
 };
